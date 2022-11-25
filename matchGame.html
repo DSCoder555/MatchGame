@@ -13,38 +13,85 @@
     </style>
     <script>
         //https://source.unsplash.com/collection/190727/800x600
-        images = ['//images.unsplash.com/photo-1464411335145-a52ac26409ad?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTQ2MQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200', '//images.unsplash.com/photo-1462349953611-c1e14d9899b3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTg2Mw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200']
+        //images = ['//images.unsplash.com/photo-1464411335145-a52ac26409ad?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTQ2MQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200', '//images.unsplash.com/photo-1462349953611-c1e14d9899b3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTg2Mw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200']
+        firstNum = -1;
+        secondNum = -1;
+        shown = false;
+        counter = 0;
+        emptyMatches = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        matches = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        solved = [false,false,false,false,false,false,false,false]
         function set(){
-            for (i = 0; i < 8; i++){
-                while(looking)
-                rnd = Math.random()*16 + 1;
-                if(document.getElementById(rnd).image == ""){
-                    document.getElementById(rnd).image == ""
-                }
+            for (i = 1; i <= 8; i++){
+                rnd = Math.random()*emptyMatches.length + 1;
+                matches[emptyMatches[rnd]] = i;
+                console.log(matches[emptyMatches[rnd]]);
+                emptyMatches.splice(rnd, 1);
+                rnd = Math.random()*emptyMatches.length + 1;
+                matches[emptyMatches[rnd]] = i;
+                emptyMatches.splice(rnd, 1);
+            }
+            console.log("test2");
+        }
+
+        function check(num1, num2){
+            if(matches[num1] == matches[num2]){
+                solved[matches[num1]] = true;
             }
         }
+
+        function hide(){
+            document.getElementById(firstNum).innerHTML = firstNum;
+            document.getElementById(secondNum).innerHTML = secondNum;
+            shown = false;
+            firstNum = -1;
+            secondNum = -1;
+        }
+
+        function click(num){
+            if(!solved[matches[num - 1]] && shown){
+                console.log("caught");
+                if(firstNum != -1){
+                    secondNum = num;
+                    correct = check(firstNum,secondNum);
+                    document.getElementById(num).innerHTML = matches[num]+'!';                    
+                }
+                else{
+                    firstNum = num;
+                    document.getElementById(num).innerHTML = matches[num]+'!';
+                }
+                counter++;
+                document.getElementById("counter").innerHTML = counter;
+            }
+            else{
+                console.log("missed");
+            }
+            console.log("test");
+        }
+            
     </script>
 </head>
-<body>
+<body onload="set();">
     <h1>Welcome to Match Game!</h1>
-    <button class="button" id="1"></button>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
+    <button class="button" id="1" onclick="click(1);">1</button>
+    <button class="button" id="2" onclick="click(2);">2</button>
+    <button class="button" id="3" onclick="click(3);">3</button>
+    <button class="button" id="4" onclick="click(4);">4</button>
     <br>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
+    <button class="button" id="5" onclick="click(5);">5</button>
+    <button class="button" id="6" onclick="click(6);">6</button>
+    <button class="button" id="7" onclick="click(7);">7</button>
+    <button class="button" id="8" onclick="click(8);">8</button>
     <br>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
+    <button class="button" id="9" onclick="click(9);">9</button>
+    <button class="button" id="10" onclick="click(10);">10</button>
+    <button class="button" id="11" onclick="click(11);">11</button>
+    <button class="button" id="12" onclick="click(12);">12</button>
     <br>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
-    <button class="button"></button>
+    <button class="button" id="13" onclick="click(13);">13</button>
+    <button class="button" id="14" onclick="click(14);">14</button>
+    <button class="button" id="15" onclick="click(15);">15</button>
+    <button class="button" id="16" onclick="click(16);">16</button>
+    <div>Counter: <span id="counter">0</span></div>
 </body>
 </html>
