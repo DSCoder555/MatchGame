@@ -20,23 +20,25 @@
         counter = 0;
         emptyMatches = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         matches = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        solved = [false,false,false,false,false,false,false,false]
+        solved = [false,false,false,false,false,false,false,false];
         function set(){
             for (i = 1; i <= 8; i++){
-                rnd = Math.random()*emptyMatches.length + 1;
+                rnd = parseInt(Math.random()*emptyMatches.length);
                 matches[emptyMatches[rnd]] = i;
-                console.log(matches[emptyMatches[rnd]]);
                 emptyMatches.splice(rnd, 1);
-                rnd = Math.random()*emptyMatches.length + 1;
+                rnd = parseInt(Math.random()*emptyMatches.length);
                 matches[emptyMatches[rnd]] = i;
                 emptyMatches.splice(rnd, 1);
             }
-            console.log("test2");
         }
 
         function check(num1, num2){
             if(matches[num1] == matches[num2]){
                 solved[matches[num1]] = true;
+                firstNum = -1;
+                secondNum = -1;
+                shown = false;
+                console.log("Match");
             }
         }
 
@@ -48,13 +50,14 @@
             secondNum = -1;
         }
 
-        function click(num){
-            if(!solved[matches[num - 1]] && shown){
+        function clicked(num){
+            if(!solved[matches[num - 1]] && !shown){
                 console.log("caught");
                 if(firstNum != -1){
                     secondNum = num;
+                    shown = true;   
                     correct = check(firstNum,secondNum);
-                    document.getElementById(num).innerHTML = matches[num]+'!';                    
+                    document.getElementById(num).innerHTML = matches[num]+'!';               
                 }
                 else{
                     firstNum = num;
@@ -65,33 +68,34 @@
             }
             else{
                 console.log("missed");
+                console.log(!solved[matches[num - 1]] + " + " + !shown);
             }
-            console.log("test");
         }
             
     </script>
 </head>
 <body onload="set();">
     <h1>Welcome to Match Game!</h1>
-    <button class="button" id="1" onclick="click(1);">1</button>
-    <button class="button" id="2" onclick="click(2);">2</button>
-    <button class="button" id="3" onclick="click(3);">3</button>
-    <button class="button" id="4" onclick="click(4);">4</button>
+    <button class="button" id="1" onclick="clicked(1);">1</button>
+    <button class="button" id="2" onclick="clicked(2);">2</button>
+    <button class="button" id="3" onclick="clicked(3);">3</button>
+    <button class="button" id="4" onclick="clicked(4);">4</button>
     <br>
-    <button class="button" id="5" onclick="click(5);">5</button>
-    <button class="button" id="6" onclick="click(6);">6</button>
-    <button class="button" id="7" onclick="click(7);">7</button>
-    <button class="button" id="8" onclick="click(8);">8</button>
+    <button class="button" id="5" onclick="clicked(5);">5</button>
+    <button class="button" id="6" onclick="clicked(6);">6</button>
+    <button class="button" id="7" onclick="clicked(7);">7</button>
+    <button class="button" id="8" onclick="clicked(8);">8</button>
     <br>
-    <button class="button" id="9" onclick="click(9);">9</button>
-    <button class="button" id="10" onclick="click(10);">10</button>
-    <button class="button" id="11" onclick="click(11);">11</button>
-    <button class="button" id="12" onclick="click(12);">12</button>
+    <button class="button" id="9" onclick="clicked(9);">9</button>
+    <button class="button" id="10" onclick="clicked(10);">10</button>
+    <button class="button" id="11" onclick="clicked(11);">11</button>
+    <button class="button" id="12" onclick="clicked(12);">12</button>
     <br>
-    <button class="button" id="13" onclick="click(13);">13</button>
-    <button class="button" id="14" onclick="click(14);">14</button>
-    <button class="button" id="15" onclick="click(15);">15</button>
-    <button class="button" id="16" onclick="click(16);">16</button>
+    <button class="button" id="13" onclick="clicked(13);">13</button>
+    <button class="button" id="14" onclick="clicked(14);">14</button>
+    <button class="button" id="15" onclick="clicked(15);">15</button>
+    <button class="button" id="16" onclick="clicked(16);">16</button>
     <div>Counter: <span id="counter">0</span></div>
+    <button onclick="hide();">Hide</button>
 </body>
 </html>
