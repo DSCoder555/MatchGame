@@ -32,6 +32,9 @@
         matches = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         solved = [false,false,false,false,false,false,false,false];
         function set(){
+            emptyMatches = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            matches = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            solved = [false,false,false,false,false,false,false,false];
             for (i = 1; i <= 8; i++){
                 rnd = parseInt(Math.random()*emptyMatches.length);
                 matches[emptyMatches[rnd]] = i;
@@ -41,6 +44,24 @@
                 emptyMatches.splice(rnd, 1);
             }
             gameOver = false;
+            counter = 0;
+            document.getElementById("counter").innerHTML = counter;
+            document.getElementById("1").style.backgroundImage = "";
+            document.getElementById("2").style.backgroundImage = "";
+            document.getElementById("3").style.backgroundImage = "";
+            document.getElementById("4").style.backgroundImage = "";
+            document.getElementById("5").style.backgroundImage = "";
+            document.getElementById("6").style.backgroundImage = "";
+            document.getElementById("7").style.backgroundImage = "";
+            document.getElementById("8").style.backgroundImage = "";
+            document.getElementById("9").style.backgroundImage = "";
+            document.getElementById("10").style.backgroundImage = "";
+            document.getElementById("11").style.backgroundImage = "";
+            document.getElementById("12").style.backgroundImage = "";
+            document.getElementById("13").style.backgroundImage = "";
+            document.getElementById("14").style.backgroundImage = "";
+            document.getElementById("15").style.backgroundImage = "";
+            document.getElementById("16").style.backgroundImage = "";
         }
 
         function check(num1, num2){
@@ -51,7 +72,7 @@
                 shown = false;
                 console.log("Match");
                 if(solved[0] && solved[1] && solved[2] && solved[3] && solved[4] && solved[5] && solved[6] && solved[7]){
-                    document.getElementById("display").innerHTML = "All matches were found, you won!"
+                    document.getElementById("display").innerHTML = "All matches were found, you won in " + (counter + 1) + " moves!"
                 }
             }
             else{
@@ -77,6 +98,10 @@
         }
 
         function clicked(num){
+            if(firstNum != -1 && secondNum != -1){
+                hide();
+                console.log("hiden");
+            }
             if(!solved[matches[num]-1] && !shown){
                 console.log("caught");
                 if(firstNum != -1){
@@ -122,7 +147,7 @@
     <button class="button" id="15" onclick="clicked(14);">15</button>
     <button class="button" id="16" onclick="clicked(15);">16</button>
     <div>Counter: <span id="counter">0</span></div>
-    <button onclick="hide();">Hide</button>
+    <button onclick="set();">Reset</button>
     <div id="display"></div>
 </body>
 </html>
