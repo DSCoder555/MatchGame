@@ -7,17 +7,27 @@
     <title>Document</title>
     <style>
         button{
-            height: 40px;
-            width: 60px;
+            height: 100px;
+            width: 200px;
         }
     </style>
     <script>
-        //https://source.unsplash.com/collection/190727/800x600
-        //images = ['//images.unsplash.com/photo-1464411335145-a52ac26409ad?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTQ2MQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200', '//images.unsplash.com/photo-1462349953611-c1e14d9899b3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=150&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY2OTIyOTg2Mw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=200']
+        //https://picsum.photos/200/100
+        images = [
+        'https://i.picsum.photos/id/1014/200/100.jpg?hmac=30xT9LEH1RPfUH9jmoeukt1zLC7WHXm1G4BUzRatcgM', 
+        'https://i.picsum.photos/id/358/200/100.jpg?hmac=TqUETu73aK8BNDG2cnAhHNu_67MqsX9tU01KtIsaXII',
+        'https://i.picsum.photos/id/878/200/100.jpg?hmac=CZVaGqltwPywla4DNIZrAzvDbzMTKX_RSTxCN3PsrSg',
+        'https://i.picsum.photos/id/847/200/100.jpg?hmac=v_HrGJyfBjY8o5xS_xwO9tuBvnIALE7RksEB5fDx2G0',
+        'https://i.picsum.photos/id/521/200/100.jpg?hmac=BdyUjqqxdtw1ZC8U3jCS52oCPR5HYqQjE2_8-h9Upi8',
+        'https://i.picsum.photos/id/322/200/100.jpg?hmac=7Ojb29qwCGYCI7VM7XHi6nfZPgHi-V_8q-Aml2ujpkY',
+        'https://i.picsum.photos/id/656/200/100.jpg?hmac=_Dk7O9cfM_Hpx_YQ222DnpW-8bxRyQBar99SQp6bmd4',
+        'https://i.picsum.photos/id/530/200/100.jpg?hmac=bIBggSkViNbWFJm5CBQWcETFaHCbHarx_O24r1xrB-M'        
+    ]
         firstNum = -1;
         secondNum = -1;
         shown = false;
         counter = 0;
+        gameOver = false;
         emptyMatches = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         matches = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         solved = [false,false,false,false,false,false,false,false];
@@ -30,45 +40,61 @@
                 matches[emptyMatches[rnd]] = i;
                 emptyMatches.splice(rnd, 1);
             }
+            gameOver = false;
         }
 
         function check(num1, num2){
             if(matches[num1] == matches[num2]){
-                solved[matches[num1]] = true;
+                solved[matches[num1]-1] = true;
                 firstNum = -1;
                 secondNum = -1;
                 shown = false;
                 console.log("Match");
+                if(solved[0] && solved[1] && solved[2] && solved[3] && solved[4] && solved[5] && solved[6] && solved[7]){
+                    document.getElementById("display").innerHTML = "All matches were found, you won!"
+                }
+            }
+            else{
+                console.log(matches[num1] + " + " + matches[num2]);
             }
         }
 
         function hide(){
-            document.getElementById(firstNum).innerHTML = firstNum;
-            document.getElementById(secondNum).innerHTML = secondNum;
-            shown = false;
-            firstNum = -1;
-            secondNum = -1;
+                if(firstNum == -1){
+
+                }
+                else if(secondNum == -1){
+                    document.getElementById(firstNum + 1).innerHTML = firstNum + 1;
+                    firstNum = -1;
+                }
+                else{
+                    document.getElementById(firstNum + 1).style.backgroundImage = "";
+                    document.getElementById(secondNum + 1).style.backgroundImage = "";
+                    shown = false;
+                    firstNum = -1;
+                    secondNum = -1;
+                }
         }
 
         function clicked(num){
-            if(!solved[matches[num - 1]] && !shown){
+            if(!solved[matches[num]-1] && !shown){
                 console.log("caught");
                 if(firstNum != -1){
                     secondNum = num;
                     shown = true;   
                     correct = check(firstNum,secondNum);
-                    document.getElementById(num).innerHTML = matches[num]+'!';               
+                    document.getElementById(num + 1).style.backgroundImage = "url(" + images[matches[num] - 1] +")";               
                 }
                 else{
                     firstNum = num;
-                    document.getElementById(num).innerHTML = matches[num]+'!';
+                    document.getElementById(num + 1).style.backgroundImage = "url(" + images[matches[num] - 1] +")";
                 }
                 counter++;
                 document.getElementById("counter").innerHTML = counter;
             }
             else{
                 console.log("missed");
-                console.log(!solved[matches[num - 1]] + " + " + !shown);
+                console.log(!solved[matches[num]-1] + " + " + !shown);
             }
         }
             
@@ -76,26 +102,27 @@
 </head>
 <body onload="set();">
     <h1>Welcome to Match Game!</h1>
-    <button class="button" id="1" onclick="clicked(1);">1</button>
-    <button class="button" id="2" onclick="clicked(2);">2</button>
-    <button class="button" id="3" onclick="clicked(3);">3</button>
-    <button class="button" id="4" onclick="clicked(4);">4</button>
+    <button class="button" id="1" onclick="clicked(0);">1</button>
+    <button class="button" id="2" onclick="clicked(1);">2</button>
+    <button class="button" id="3" onclick="clicked(2);">3</button>
+    <button class="button" id="4" onclick="clicked(3);">4</button>
     <br>
-    <button class="button" id="5" onclick="clicked(5);">5</button>
-    <button class="button" id="6" onclick="clicked(6);">6</button>
-    <button class="button" id="7" onclick="clicked(7);">7</button>
-    <button class="button" id="8" onclick="clicked(8);">8</button>
+    <button class="button" id="5" onclick="clicked(4);">5</button>
+    <button class="button" id="6" onclick="clicked(5);">6</button>
+    <button class="button" id="7" onclick="clicked(6);">7</button>
+    <button class="button" id="8" onclick="clicked(7);">8</button>
     <br>
-    <button class="button" id="9" onclick="clicked(9);">9</button>
-    <button class="button" id="10" onclick="clicked(10);">10</button>
-    <button class="button" id="11" onclick="clicked(11);">11</button>
-    <button class="button" id="12" onclick="clicked(12);">12</button>
+    <button class="button" id="9" onclick="clicked(8);">9</button>
+    <button class="button" id="10" onclick="clicked(9);">10</button>
+    <button class="button" id="11" onclick="clicked(10);">11</button>
+    <button class="button" id="12" onclick="clicked(11);">12</button>
     <br>
-    <button class="button" id="13" onclick="clicked(13);">13</button>
-    <button class="button" id="14" onclick="clicked(14);">14</button>
-    <button class="button" id="15" onclick="clicked(15);">15</button>
-    <button class="button" id="16" onclick="clicked(16);">16</button>
+    <button class="button" id="13" onclick="clicked(12);">13</button>
+    <button class="button" id="14" onclick="clicked(13);">14</button>
+    <button class="button" id="15" onclick="clicked(14);">15</button>
+    <button class="button" id="16" onclick="clicked(15);">16</button>
     <div>Counter: <span id="counter">0</span></div>
     <button onclick="hide();">Hide</button>
+    <div id="display"></div>
 </body>
 </html>
